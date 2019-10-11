@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><h1>News</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon">something</span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Intenational</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">National</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      Always forward for news
+    </span>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="row" style="margin:10px;">
+    {%for i in feed%}
+       <div class="col-sm-4 col-12">
+           <div class="card" >
+              <a href="{{i.link}}" style="text-decoration:none;cursor:pointer;">
+               <h5 class="card-title" style="margin:10px;color:black;" align="center">{{i.title}}</h5>
+                  <small class="card-subtitle mb-2 text-muted">{{i.date}}</small>
+               <div class="card-body" align="center">
+               <div style="width:250px;height:200px;"><img src="{{i.image}}" style="fit-object:contain;width:inherit;height:inherit;"></div>
+               <div style="color:black;margin-top:10px;">{{i.description|truncatechars:70|linebreaks}}</div>
+              </a>
+              </div>
+           </div>
+       </div>
+    {%endfor%}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
