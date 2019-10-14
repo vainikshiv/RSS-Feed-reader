@@ -1,54 +1,139 @@
+{%load static%}
 <!DOCTYPE html>
 <html>
 <head>
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+   <!---Custom CSS link --->
+   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
 </head>
 <body>
+<!---Start navbar --->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#"><h1>News</h1></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon">something</span>
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto" style="margin-left:50px;">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'reader:home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Intenational</a>
+        <a class="nav-link" href="{% url 'reader:international' %}">Intenational</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">National</a>
+        <a class="nav-link" href="{% url 'reader:national' %}">National</a>
       </li>
     </ul>
     <span class="navbar-text">
-      Always forward for news
+      Always step ahead
     </span>
   </div>
 </nav>
+<!---End navbar --->
 
-<div class="container">
-    <div class="row" style="margin:10px;">
+<!---Start carousel --->
+<div class="row ma-10" >
+    <div class="col-sm-8 col-12">
+        <div class="bg-info box-radius"><h4 style="padding:15px;">Latest news</h4></div><hr/>
+        <div class="bd-example">
+          <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+              <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+            </ol>
+              <div class="carousel-inner" style="border-radius:10px;">
+             {%for i in feed|slice:":3"%}
+              {%if forloop.first %}
+              <a href="{{i.link}}" class="carousel-item active" >
+                <div style="height:600px;"><img src="{%if i.image != ''%}{{i.image}}{%else%}{%static 'img/default.jpg' %}{%endif%}" class="d-block w-100" alt="news image" style="width:inherit;height:inherit;"></div>
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="opa"><h5 class="back-black">{{i.title|safe}}</h5></div>
+                </div>
+              </a>
+              {%else%}
+              <a href="{{i.link}}" class="carousel-item">
+                <div style="height:600px;"><img src="{%if i.image != ''%}{{i.image}}{%else%}{%static 'img/default.jpg' %}{%endif%}" class="d-block w-100" alt="news image" style="width:inherit;height:inherit;"></div>
+                <div class="carousel-caption d-none d-md-block">
+                    <div class="opa"><h5 class="back-black">{{i.title|safe}}</h5></div>
+                </div>
+              </a>
+              {%endif%}
+            {%endfor%}
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-12">
+        <div class="card ma-10">
+            <div class="bg-info box-radius"><h4 class="card-title ma-10 " style="padding:10px;">Headlines</h4></div><hr/>
+            <div class="card-body" >
+                {%for i in headlines%}
+                 {%if forloop.counter < 9 %}
+                <a href="{{i.link}}" class="back-black" style="text-decoration:none;cursor:pointer;">
+                    <h6>{{i.title}}</h6>
+                    <div align="right"><small style="font-size:10px;">{{i.date}}</small></div>
+                </a>
+                 {%endif%}
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+<!---End carousel --->
+<hr/>
+
+<!---Start other content --->
+<div class="container-fluid">
+    <div class="bg-info box-radius"><h3 class="ma-10" style="padding:15px;">Other News</h3></div><hr/>
+    <div class="row ma-10" >
     {%for i in feed%}
-       <div class="col-sm-4 col-12">
-           <div class="card" >
+       {%if forloop.counter > 3 %}
+       <div class="col-sm-3 col-12">
+           <div class="card mt-2" style="height:410px;">
               <a href="{{i.link}}" style="text-decoration:none;cursor:pointer;">
-               <h5 class="card-title" style="margin:10px;color:black;" align="center">{{i.title}}</h5>
-                  <small class="card-subtitle mb-2 text-muted">{{i.date}}</small>
+               <div style="min-height:100px;"><h5 class="card-title" style="margin:10px;color:black;" align="center">{{i.title|safe}}</h5>
+               <div align="right"><small class="card-subtitle text-muted">{{i.date}}</small></div></div>
                <div class="card-body" align="center">
-               <div style="width:250px;height:200px;"><img src="{{i.image}}" style="fit-object:contain;width:inherit;height:inherit;"></div>
-               <div style="color:black;margin-top:10px;">{{i.description|truncatechars:70|linebreaks}}</div>
+               <div style="width:250px;height:180px;"><img src="{%if i.image != ''%}{{i.image}}{%else%}{%static 'img/default.jpg' %}{%endif%}" style="fit-object:contain;width:inherit;height:inherit;"></div>
+               <div style="color:black;margin-top:10px;">{{i.description|truncatechars:72|linebreaks}}</div>
               </a>
               </div>
            </div>
        </div>
+       {%endif%}
     {%endfor%}
     </div>
 </div>
+<!---End other content --->
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Footer -->
+<footer class="page-footer font-small blue bg-dark">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3" style="color:white;">Developed By :
+    <a href="#"> Vaibhav Nikam (contact: +91 9923266592)</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+<!---Javascript link--->
+<script src="{% static 'js/jquery.slim.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>

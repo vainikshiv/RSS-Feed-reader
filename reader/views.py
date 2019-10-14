@@ -1,35 +1,22 @@
 from django.shortcuts import render
-import feedparser
-import requests
-from bs4 import BeautifulSoup
-import xml
+from .parser import top_news, international_news, national_news, headlines_news
 
 
-# Create your views here.
 def home(request):
-    # d = feedparser.parse('http://feeds.bbci.co.uk/news/rss.xml')
-    # for entry in d.entries:
-    #     print(entry,'\n')
-    # url = "http://feeds.bbci.co.uk/news/rss.xml"
-    url = "http://www.hindustantimes.com/rss/topnews/rssfeed.xml"
+    # call top_news function from parser file
+    news_items = top_news()
+    headlines = headlines_news()
+    # send data to template
+    return render(request,'home.html',{'feed':news_items, 'headlines':headlines})
 
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.content, features="xml")
+def international(request):
+    # call international_news function from parser file
+    news_items = international_news()
+    # send data to template
+    return render(request,'international.html',{'feed':news_items})
 
-    items = soup.findAll('item')
-
-    news_items = []
-
-    for item in items:
-        print(item)
-        news_item = {}
-        if item.title.text != '':
-            news_item['title'] = item.title.text
-            news_item['description'] = item.description.text
-            news_item['link'] = item.link.text
-            news_item['image'] = item.content['url']
-            news_item['date'] = item.pubDate.text
-            news_items.append(news_item)
-
-    # print(news_items)
-    return render(request,'home.html',{'feed':news_items})
+def national(request):
+    # call national_news function from parser file
+    news_items = national_news()
+    # send data to template
+    return render(request,'national.html',{'feed':news_items})

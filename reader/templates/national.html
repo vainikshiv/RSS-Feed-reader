@@ -1,0 +1,77 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+   <!---Custom CSS link --->
+   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+</head>
+<body>
+
+<!---Start Navbar--->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><h1>News</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon">something</span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto" style="margin-left:50px;">
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'reader:home' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'reader:international' %}">Intenational</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'reader:national' %}">National</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      Always step ahead
+    </span>
+  </div>
+</nav>
+<!---End Navbar--->
+
+<!---Start Body--->
+<div class="container-fluid">
+    <div class="box-radius bg-info"><h4 class="ma-10" style="padding:15px;">National News</h4></div><hr/>
+    <div class="row ma-10" >
+    {%for i in feed%}
+       <div class="col-sm-4 col-12">
+           <div class="card" style="height:410px;margin-top:10px;">
+              <a href="{{i.link}}" style="text-decoration:none;cursor:pointer;">
+               <h5 class="card-title" style="margin:10px;color:black;" align="center">{{i.title|safe}}</h5>
+               <div align="right" style="margin-right:10px;"><small class="card-subtitle text-muted">{{i.date}}</small></div>
+               <div class="card-body" align="center">
+               <div style="width:350px;height:240px;"><img src="{%if i.image != ''%}{{i.image}}{%else%}{%static 'img/default.jpg' %}{%endif%}" style="fit-object:contain;width:inherit;height:inherit;"></div>
+               <div style="color:black;margin-top:10px;">{{i.description|truncatechars:72|linebreaks}}</div>
+              </a>
+              </div>
+           </div>
+       </div>
+    {%endfor%}
+    </div>
+</div>
+<!---End Body--->
+
+<!-- Footer -->
+<footer class="page-footer font-small blue bg-dark">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3" style="color:white;">Developed By :
+    <a href="#"> Vaibhav Nikam (contact: +91 9923266592)</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+<!---Javascript link--->
+<script src="{% static 'js/jquery.slim.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>
