@@ -4,10 +4,10 @@ Rss-feed-reader is a site where you can read news.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Use the requirements.txt file to install packages.
 
 ```bash
-pip install foobar
+pip install -r requirements.txt
 ```
 
 ## Usage
